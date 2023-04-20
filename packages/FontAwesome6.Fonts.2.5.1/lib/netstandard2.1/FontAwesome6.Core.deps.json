@@ -1,0 +1,24 @@
+{
+  "runtimeTarget": {
+    "name": ".NETStandard,Version=v2.1/",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETStandard,Version=v2.1": {},
+    ".NETStandard,Version=v2.1/": {
+      "FontAwesome6.Core/2.5.1.0": {
+        "runtime": {
+          "FontAwesome6.Core.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "FontAwesome6.Core/2.5.1.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

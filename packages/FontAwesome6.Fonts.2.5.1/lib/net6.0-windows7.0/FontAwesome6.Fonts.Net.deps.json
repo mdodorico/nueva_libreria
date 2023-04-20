@@ -1,0 +1,50 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "FontAwesome6.Fonts.Net/2.5.1.0": {
+        "dependencies": {
+          "FontAwesome6.Core": "2.5.1",
+          "FontAwesome6.Shared.Net": "2.5.1"
+        },
+        "runtime": {
+          "FontAwesome6.Fonts.Net.dll": {}
+        }
+      },
+      "FontAwesome6.Core/2.5.1": {
+        "runtime": {
+          "FontAwesome6.Core.dll": {}
+        }
+      },
+      "FontAwesome6.Shared.Net/2.5.1": {
+        "dependencies": {
+          "FontAwesome6.Core": "2.5.1"
+        },
+        "runtime": {
+          "FontAwesome6.Shared.Net.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "FontAwesome6.Fonts.Net/2.5.1.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "FontAwesome6.Core/2.5.1": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "FontAwesome6.Shared.Net/2.5.1": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

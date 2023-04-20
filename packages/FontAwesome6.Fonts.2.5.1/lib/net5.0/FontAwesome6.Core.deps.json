@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v5.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v5.0": {
+      "FontAwesome6.Core/2.5.1.0": {
+        "runtime": {
+          "FontAwesome6.Core.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "FontAwesome6.Core/2.5.1.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

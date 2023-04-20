@@ -1,0 +1,68 @@
+﻿@model Libreria.Models.UsuarioLogin
+
+@{
+    ViewBag.Title = "Recuperar clave";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
+    <link rel="shortcut icon" href="~/Imagenes/favicon.ico">
+
+    <title>Iniciar sesión</title>
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/themes/base/all.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="body"></div>
+    <div class="grad"></div>
+    <div class="header">
+        <div>Mundo<span>Creativo</span></div>
+    </div>
+    <br>
+    <div class="login">
+        @using (Html.BeginForm("RecuperarClave", "Login", FormMethod.Post, new { onsubmit = "return SubmitForm(this)" }))
+        {
+            var parameter = Request.QueryString["ac"];
+            if (parameter == "emailNoExiste")
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Error: el email ingresado no existe.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            else if (parameter == "emailEnviado")
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    Enviamos un correo a su email con los pasos a seguir para recuperar su cuenta.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            <p>Por favor, ingrese su correo para recuperar su cuenta</p>
+            <div class="input-group">
+                @Html.TextBoxFor(m => m.email, new { @class = "form-control", type = "text", name = "user" })
+            </div>
+
+            <div class="form-group">
+                <input class="button" type="submit" value="Enviar" />
+                <button class="button" onclick="location.href='@Url.Action("Ingresar", "Login")';return false;">Volver</button>
+            </div>
+        }
+    </div>
+    <script src="~/Scripts/jquery-3.6.4.min.js"></script>
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.13.2.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/notify.min.js"></script>
+</body>
+</html>

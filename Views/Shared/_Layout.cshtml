@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="~/Imagenes/favicon.ico">
+
+    <title>@ViewBag.Title - Mundo Creativo .NET</title>
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/themes/base/all.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.css" rel="stylesheet" type='text/css'>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark gradient-custom">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="@Url.Action("Index", "Home")">Mundo Creativo</a>
+            <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
+                    data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <i class="fas fa-bars text-light"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent" style="margin-right: 15px;">
+                <ul class="navbar-nav ms-auto d-flex flex-row">
+                    <li class="nav-item text-center">
+                        @{Html.RenderAction("MenuUsuario", "MenuUsuario");}
+                    </li>
+                </ul>
+                <ul class="navbar-nav d-flex flex-row">
+                    <li class="nav-item me-auto text-center">
+                        <a class="nav-link active" aria-current="page" href="@Url.Action("Index", "Carrito")">
+                            <div>
+                                <i class="fa-sharp fa-solid fa-cart-shopping"></i>
+                            </div>
+                            Carrito
+                        </a>
+                    </li>
+                    <li class="nav-item me-auto text-center">
+                        @{Html.RenderAction("MenuAdmin", "MenuAdmin");}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div id="body">
+            @RenderSection("featured", required: false)
+            <section class="content-wrapper main-content clear-fix">
+                @RenderBody()
+            </section>
+        </div>
+    </div>
+    <footer class="text-center">
+        <div class="text-center p-3">
+            Copyright &copy; Mundo Creativo .NET - @DateTime.Now.Year - Diseño y desarrollo: Mariana I. D'Odorico
+        </div>
+    </footer>
+
+    <script src="~/Scripts/jquery-3.6.4.min.js"></script>
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.13.2.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/notify.min.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

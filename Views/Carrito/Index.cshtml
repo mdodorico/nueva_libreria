@@ -1,0 +1,159 @@
+﻿@model IEnumerable<Libreria.Models.carrito>
+
+@{
+    ViewBag.Title = "Carrito";
+}
+
+<div class="row">
+    <div class="container" style="width: 93%;">
+        <div style="display: flex; align-items: baseline;">
+            <h2 style="color: forestgreen; font-family: Middle Schooler; font-size: 58px">Carrito</h2>&nbsp;&nbsp;&nbsp;
+            <h2 style="color: orangered; font-family: MATILDAS BACK TO SCHOOL_Demo; font-size: 45px"> RC</h2>
+        </div>
+        <br />
+        <div class="card border">
+            <table id="tblCarrito" class="table table-hover" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Nombre</th>
+                        <th>Precio</th>
+                        <th>Descripción</th>
+                        <th>Cantidad</th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <br />
+        <div style="display:flex; align-items:baseline;">
+            <h5 style="color: black;">Total a pagar: $</h5>
+            <span id="montoTotal" style="font-size: 18px; padding: 5px; color: black;"></span>
+        </div>
+        <br/>
+        <span><button class="btn btn-success" style="color: white;" onclick="location.href='@Url.Action("Finalizar", "Carrito")';return false;">Finalizar</button></span>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.jqueryui.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js" integrity="sha256-6XMVI0zB8cRzfZjqKcD01PBsAy3FlDASrlC8SxCpInY=" crossorigin="anonymous"></script>
+
+    <script>
+        $(document).ready(function () {
+            dataTable = $("#tblCarrito").DataTable({
+                "bFilter": false,
+                "order": [1, 'asc'],
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
+                "ajax": {
+                    "url": "/Carrito/GetData",
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns": [
+                    {
+                        "data": "imagen",
+                        "className": "text-center",
+                        'sortable': false,
+                        'searchable': false,
+                        'render': function (imagen) {
+                            var img = '../Imagenes/' + imagen;
+                            return '<img src="' + img + '" height="70px" />';
+                        }
+                    },
+                    { "data": "nombre" },
+                    {
+                        "data": "precio",
+                        "render": function (precio, type, row) {
+                            return precio.toFixed(2)
+                        }
+                    },
+                    { "data": "descripcion" },
+                    {
+                        "data": "cantidad",
+                        "className": "text-center"
+                    },
+                    {
+                        "data": "id", "render": function (data) {
+                            return "<a class='btn btn-warning btn-sm' style='margin-left:5px; margin-top: 15px;' title='Eliminar un item' onclick=BorrarUno(" + data + ")><i class='fa-solid fa-minus'></i></a><a class='btn btn-danger btn-sm' style='margin-left:5px; margin-top: 15px;' title='Eliminar todo' onclick=BorrarTodo(" + data + ")><i class='fa-solid fa-trash'></i></a>";
+                        },
+                        "orderable": false,
+                        "width": "250px",
+                        "className": "text-center"
+                    }
+                ],
+                "language": {
+                    "emptyTable": "No hay productos en el carrito",
+                    "lengthMenu": "Mostrar  _MENU_  registros",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                    "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                }
+            });
+        });
+
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                url: "/Carrito/GetData",
+                dataType: 'json',
+                success: function (data) {
+                    $('#montoTotal').text(data.total.toFixed(2));
+                }
+            });
+        });
+
+        function BorrarTodo(id) {
+            if (confirm('¿Eliminar todo?'))
+            {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("BorrarTodo","Carrito")/' + id,
+                    success: function (data) {
+                        if (data.success) {
+                            dataTable.ajax.reload();
+                            window.location.reload();
+
+                            $.notify(data.message, {
+                                globalPosition: "top center",
+                                className: "success"
+                            })
+                        }
+                    }
+                });
+            }
+        };
+
+        function BorrarUno(id) {
+            if (confirm('¿Quitar un item del producto?'))
+            {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("BorrarUno","Carrito")/' + id,
+                    success: function (data) {
+                        if (data.success) {
+                            dataTable.ajax.reload();
+                            window.location.reload();
+
+                            $.notify(data.message, {
+                                globalPosition: "top center",
+                                className: "success"
+                            })
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+}

@@ -1,0 +1,186 @@
+﻿@model IEnumerable<Libreria.Models.usuarios>
+
+@{
+    ViewBag.Title = "ABM Usuarios";
+}
+
+<div class="row">
+    <div class="container" style="width: 93%;">
+        @{
+            var parameter = Request.QueryString["ac"];
+            if (parameter == "emailExiste")
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 30px; margin-bottom: -15px;">
+                    Error: el email ya se encuentra registrado
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            else if (parameter == "nuevo")
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 30px; margin-bottom: -15px;">
+                    Usuario registrado
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            else if (parameter == "editado")
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 30px; margin-bottom: -15px;">
+                    Datos del usuario modificados
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            else if (parameter == "eliminado")
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 30px; margin-bottom: -15px;">
+                    Registro eliminado exitosamente
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+        }
+
+        <div style="display: flex; align-items: baseline;">
+            <h2 style="color: forestgreen; font-family: Middle Schooler; font-size: 58px">ABM Usuarios</h2>&nbsp;&nbsp;&nbsp;
+            <h2 style="color: orangered; font-family: MATILDAS BACK TO SCHOOL_Demo; font-size: 45px"> RC</h2>
+        </div>
+        <br />
+        <a class="btn btn-success" style="margin-bottom: 10px; color: white;" title="Crear" onclick="PopupForm('@Url.Action("CrearEditar","Usuarios")')"><i class="fa-solid fa-user-plus"></i></a>
+        <br />
+        <div class="card border">
+            <table id="tblUsuarios" class="table table-hover" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Email</th>
+                        <th>Rol</th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.jqueryui.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js" integrity="sha256-6XMVI0zB8cRzfZjqKcD01PBsAy3FlDASrlC8SxCpInY=" crossorigin="anonymous"></script>
+
+    <script>
+		var Popup, dataTable;
+
+        $(document).ready(function () {
+            dataTable = $("#tblUsuarios").DataTable({
+                "bFilter": false,
+                "order": [0, 'asc'],
+                "lengthMenu": [[5, 10, 25, -1], [5, 10, 25, "Todo"]],
+                "ajax": {
+                    "url": "/Usuarios/GetData",
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "nombre" },
+                    { "data": "apellido" },
+                    { "data": "email" },
+                    {
+                        "data": "rol",
+                        "render": function (rol) {
+                            if (rol === 'ADMIN') {
+                                return "Administrador";
+                            } else {
+                                return "Usuario";
+                            }
+                        }
+                    },
+                    {
+                        "data": "id", "render": function (data) {
+                            return "<a class='btn btn-primary btn-sm' title='Editar' onclick=PopupForm('@Url.Action("CrearEditar","Usuarios")/" + data + "')><i class='fa-solid fa-pen-to-square'></i></a><a class='btn btn-danger btn-sm' style='margin-left:5px' title='Eliminar' onclick=Eliminar(" + data + ")><i class='fa-solid fa-trash'></i></a>";
+                        },
+                        "orderable": false,
+                        "width": "250px",
+                        "className": "text-center",
+                    }
+                ],
+                "language": {
+                    "emptyTable": "No hay usuarios registrados",
+                    "lengthMenu": "Mostrar  _MENU_  registros",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                    "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                }
+            });
+        });
+
+        function PopupForm(url) {
+            var formDiv = $('<div/>');
+            $.get(url)
+            .done(function (response) {
+                formDiv.html(response);
+                Popup = formDiv.dialog({
+                    autoOpen: true,
+                    resizable: false,
+                    width: '400px',
+                    close: function(){
+                        Popup.dialog('destroy').remove();
+                    }
+                });
+            });
+        }
+
+        function SubmitForm(form) {
+            $.validator.unobtrusive.parse(form);
+            if ($(form).valid()) {
+
+                $.ajax({
+                    type: "POST",
+                    url: form.action,
+                    data: $(form).serialize(),
+                    success: function (data) {
+                        if (data.success) {
+                            Popup.dialog('close');
+                            dataTable.ajax.reload();
+
+                            $.notify(data.message,{
+                                globalPosition : "top center",
+                                className : "success"
+                            })
+                        }
+                    }
+                });
+            }
+            return false;
+        }
+
+        function Eliminar(id) {
+            if (confirm('¿Seguro que desea eliminar este usuario?'))
+            {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Eliminar", "Usuarios")/' + id,
+                    success: function (data) {
+                        if (data.success) {
+                            dataTable.ajax.reload();
+
+                            $.notify(data.message, {
+                                globalPosition: "top center",
+                                className: "success"
+                            })
+                        }
+                    }
+                });
+            }
+        }
+
+    </script>
+}

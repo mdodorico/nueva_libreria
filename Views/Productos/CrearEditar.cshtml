@@ -1,0 +1,59 @@
+﻿@model Libreria.Models.productos
+
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("CrearEditar", "Productos", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(model => model.id)
+
+    if (Model.id == 0)
+    {
+        <h5 style="color: Tomato; margin-bottom: -30px; text-align: center; font-weight: bold; ">Crear nuevo producto</h5>
+    }
+    else
+    {
+        <h5 style="color: Tomato; text-align: center; font-weight: bold; ">Editar datos del producto</h5>
+    }
+
+    <div class="" height="100" width="80px">
+        <img src="/Imagenes/@Html.DisplayFor(model => model.imagen)" alt="" width="80">
+    </div>
+    <br />
+    <div class="form-group">
+        <label for="file">Imagen</label>
+        <input type="file" name="file" />
+    </div>
+    <br />
+    <div class="form-group">
+        <label for="nombre">Nombre<span style="color: red"> *</span></label>
+        @Html.EditorFor(model => model.nombre, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+        @Html.ValidationMessageFor(model => model.nombre, null, new { @class = "text-danger" })
+    </div>
+    <br />
+
+    <div class="form-group">
+        <label for="stock">Stock<span style="color: red"> *</span></label>
+        @Html.EditorFor(model => model.stock, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+        @Html.ValidationMessageFor(model => model.stock, null, new { @class = "text-danger" })
+    </div>
+    <br />
+    <div class="form-group">
+        <label for="descripcion">Descripción<span style="color: red"> *</span></label>
+        @Html.TextAreaFor(model => model.descripcion, new { @class = "form-control", required = "required" })
+        @Html.ValidationMessageFor(model => model.descripcion, null, new { @class = "text-danger" })
+    </div>
+    <br />
+    <div class="form-group">
+        <label for="precio">Precio<span style="color: red"> *</span></label>
+        @Html.EditorFor(model => model.precio, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+        @Html.ValidationMessageFor(model => model.precio, null, new { @class = "text-danger" })
+    </div>
+    <br />
+
+    <div class="form-group">
+        <input type="submit" value="Guardar" class="btn btn-primary" style="color: white;" />
+        <span style="font-size: 14px; float: right"><span style="color: red"> *</span> Campo obligatorio</span>
+    </div>
+}

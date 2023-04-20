@@ -1,0 +1,16 @@
+﻿<li class="nav-item dropdown text-center">
+    <a class="nav-link active dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <div>
+            <i class="fa-sharp fa-solid fa-circle-user"></i>
+        </div>
+        @ViewBag.Usuario
+    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <button class="btn btn-sm" onclick="location.href='@Url.Action("EditarPerfil", "Usuarios")';return false;">Mi perfil</button>
+        @using (Html.BeginForm("CerrarSesion", "Login", FormMethod.Post, new { id = "logoutForm" }))
+        {
+            @Html.AntiForgeryToken()
+            <button class="btn btn-sm" onclick="javascript:document.getElementById('logoutForm').submit()">Salir</button>
+        }
+    </div>
+    </a>
+</li>

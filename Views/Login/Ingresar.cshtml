@@ -1,0 +1,91 @@
+﻿@model Libreria.Models.UsuarioLogin
+
+@{
+    ViewBag.Title = "Ingresar";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
+    <link rel="shortcut icon" href="~/Imagenes/favicon.ico">
+
+    <title>Iniciar sesión</title>
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/themes/base/all.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="body"></div>
+    <div class="grad"></div>
+    <div class="header">
+        <div>Mundo<span>Creativo</span></div>
+    </div>
+    <br>
+    <div class="login">
+        @using (Html.BeginForm("Ingresar", "Login"))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+
+            var parameter = Request.QueryString["ac"];
+            if (parameter == "error")
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Los datos ingresados no son correctos
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            else if (parameter == "eliminado")
+            {
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    Su cuenta fue eliminada del sistema. Para volver a iniciar sesión, deberá crear una nueva.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            <div class="input-group">
+                @Html.TextBoxFor(m => m.email, new { @class = "form-control", placeholder = "Email", type = "text", name = "user" })
+                @Html.ValidationMessageFor(m => m.email, null, new { @class = "text-danger" })
+            </div>
+
+            <div class="input-group">
+                @Html.PasswordFor(m => m.clave, new { @class = "form-control", placeholder = "Clave", type = "password", name = "password" })
+                <input type="checkbox" id="mostrarClave" style="width:1.5em; height:1.5em; margin-left: 5px; margin-top: 15px;"/>
+                @Html.ValidationMessageFor(m => m.clave, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group" style="margin-top: 15px;">
+                <input class="button" type="submit" value="Ingresar">
+                <button class="button" onclick="location.href='@Url.Action("Registrarse", "Login")';return false;">Registrarse</button>
+            </div>
+            <div style="margin-top: 10px;">
+                <a href="@Url.Action("RecuperarClave", "Login")" style="color: white">¿Olvidaste la contraseña?</a>
+            </div>
+        }
+    </div>
+    <script src="~/Scripts/jquery-3.6.4.min.js"></script>
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.13.2.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/notify.min.js"></script>
+    <script>
+        $(function () {
+            $("#mostrarClave").change(function () {
+                var checked = $(this).is(":checked");
+                if (checked) {
+                    $("#clave").attr("type", "text");
+                }
+                else {
+                    $("#clave").attr("type", "password");
+                }
+            });
+        });
+    </script>
+</body>
+</html>

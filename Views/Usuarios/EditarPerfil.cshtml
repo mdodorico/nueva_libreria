@@ -1,0 +1,79 @@
+﻿@model Libreria.Models.usuarios
+
+@{
+    ViewBag.Title = "Mi perfil";
+}
+
+@using (Html.BeginForm("EditarPerfil", "Usuarios", FormMethod.Post))
+{
+    var parameter = Request.QueryString["ac"];
+    if (parameter == "editado")
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 30px; margin-bottom: -15px;">
+            Los datos fueron actualizados
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @Html.HiddenFor(model => model.id)
+
+    <h5 style="color: green; font-weight: bold; margin-top: 50px; text-align: center;">Mis datos</h5>
+    <div class="form-group" style="margin-left: 500px; margin-top: 30px;">
+        @Html.EditorFor(model => model.nombre, new { htmlAttributes = new { @class = "form-control", required = "required", type = "text" } })
+        @Html.ValidationMessageFor(model => model.nombre, null, new { @class = "text-danger" })
+    </div>
+    <br />
+    <div class="form-group" style="margin-left: 500px; margin-top: 20px;">
+        @Html.EditorFor(model => model.apellido, new { htmlAttributes = new { @class = "form-control", required = "required", type = "text" } })
+        @Html.ValidationMessageFor(model => model.apellido, null, new { @class = "text-danger" })
+    </div>
+    <br />
+    <div class="form-group" style="margin-left: 500px; margin-top: 20px;">
+        @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control", required = "required", type = "text", disabled = "disabled" } })
+        @Html.ValidationMessageFor(model => model.email, null, new { @class = "text-danger" })
+    </div>
+    <br />
+    <div class="form-group" style="margin-left: 500px; margin-top: 20px;">
+        @Html.PasswordFor(model => model.clave, new { @class = "form-control", value = Model.clave, type = "password" })
+        <input type="checkbox" id="mostrarClave" style="width:1.5em; height:1.5em; margin-left: 5px; margin-top: 15px;" />
+        @Html.ValidationMessageFor(model => model.clave, null, new { @class = "text-danger" })
+    </div>
+    <br />
+    <div class="form-group" style="margin-left: 500px; margin-top: 10px;">
+        <input type="submit" value="Guardar" class="btn btn-success btn-sm" style="color: white;" />
+        <button class="btn btn-info btn-sm" style="color: white;" onclick="location.href='@Url.Action("Index", "Home")';return false;">Volver</button>
+    </div>
+
+    <script src="~/Scripts/jquery-3.6.4.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.13.2.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        $(function () {
+            $("#mostrarClave").change(function () {
+                var checked = $(this).is(":checked");
+                if (checked) {
+                    $("#clave").attr("type", "text");
+                }
+                else {
+                    $("#clave").attr("type", "password");
+                }
+            });
+        });
+    </script>
+}
+
+<div style="margin-left: 41.5em; margin-bottom: 6.5em; margin-top: 1em;">
+    @using (Html.BeginForm("EliminarCuenta", "Usuarios", FormMethod.Post))
+    {
+        <input type="submit" value="Eliminar cuenta" class="btn btn-danger btn-sm" style="color: white;" onclick="return confirm('¿Está seguro de cerrar su cuenta? Esta acción no puede deshacerse')" />
+
+        <script src="~/Scripts/jquery-3.6.4.min.js"></script>
+        <script src="~/Scripts/jquery-ui-1.13.2.min.js"></script>
+        <script src="~/Scripts/jquery.validate.min.js"></script>
+        <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    }
+</div>
+
+
+

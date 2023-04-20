@@ -1,0 +1,60 @@
+﻿@model Libreria.Models.usuarios
+
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("CrearEditar", "Usuarios", FormMethod.Post))
+{
+    @Html.HiddenFor(model => model.id)
+
+    if (Model.id == 0)
+    {
+        <h5 style="color: Tomato; text-align: center; font-weight: bold;">Registrar nuevo usuario</h5>
+    }
+    else
+    {
+        <h5 style="color: Tomato; text-align: center; font-weight: bold;">Editar datos del usuario</h5>
+    }
+
+    <div class="form-group">
+        <label for="nombre">Nombre<span style="color: red"> *</span></label>
+        @Html.EditorFor(model => model.nombre, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+        @Html.ValidationMessageFor(model => model.nombre, null, new { @class = "text-danger" })
+    </div>
+    <br />
+    <div class="form-group">
+        <label for="apellido">Apellido<span style="color: red"> *</span></label>
+        @Html.EditorFor(model => model.apellido, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+        @Html.ValidationMessageFor(model => model.apellido, null, new { @class = "text-danger" })
+    </div>
+    <br />
+    <div class="form-group">
+        <label for="email">Email<span style="color: red"> *</span></label>
+        @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+        @Html.ValidationMessageFor(model => model.email, null, new { @class = "text-danger" })
+    </div>
+    <br />
+    <div class="form-group">
+        <label for="clave">Clave<span style="color: red"> *</span></label>
+        @Html.PasswordFor(model => model.clave, new { @class = "form-control", value = Model.clave })
+        @Html.ValidationMessageFor(model => model.clave, null, new { @class = "text-danger" })
+    </div>
+    <br />
+    <div class="form-group">
+        <label for="rol">Rol<span style="color: red"> *</span></label>
+        @Html.DropDownList("rol", new SelectList(new[] { "USER", "ADMIN" }))
+    </div>
+    <br />
+
+    <div class="form-group">
+        <input type="submit" value="Guardar" class="btn btn-primary" style="color: white;"/>
+        <span style="font-size: 14px; float: right"><span style="color: red"> *</span> Campo obligatorio</span>
+    </div>
+
+    <script src="~/Scripts/jquery-3.6.4.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.13.2.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+}
+

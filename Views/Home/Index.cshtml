@@ -1,0 +1,126 @@
+﻿@model IEnumerable<Libreria.Models.productos>
+
+@{
+    ViewBag.Title = "Inicio";
+}
+
+<div class="row">
+    <div class="container" style="width: 88%;">
+        <div style="display: flex; align-items: baseline;">
+            <h2 style="color: forestgreen; font-family: Middle Schooler; font-size: 58px">Productos</h2>&nbsp;&nbsp;&nbsp;
+            <h2 style="color: orangered; font-family: MATILDAS BACK TO SCHOOL_Demo; font-size: 45px"> RC</h2>
+        </div>
+        
+        <div class="card border">
+            <table id="tblProductos" class="table table-hover" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Nombre</th>
+                        <th>Precio</th>
+                        <th>Descripción</th>
+                        <th>Stock</th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.jqueryui.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js" integrity="sha256-6XMVI0zB8cRzfZjqKcD01PBsAy3FlDASrlC8SxCpInY=" crossorigin="anonymous"></script>
+
+    <script>
+        $(document).ready(function () {
+            dataTable = $("#tblProductos").DataTable({
+                "bFilter": false,
+                "order": [1, 'asc'],
+                "width": "85%",
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
+                "ajax": {
+                    "url": "/Productos/GetData",
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns": [
+                    {
+                        "data": "imagen",
+                        "className": "text-center",
+                        'sortable': false,
+                        'searchable': false,
+                        'render': function (imagen) {
+                            var img = '../Imagenes/' + imagen;
+                            return '<img src="' + img + '" height="70px" />';
+                        }
+                    },
+                    { "data": "nombre" },
+                    {
+                        "data": "precio",
+                        "render": function (precio) {
+                            return precio.toFixed(2)
+                        }
+                    },
+                    { "data": "descripcion" },
+                    {
+                        "data": "stock",
+                        "render": function (stock) {
+                            if (stock === 0) {
+                                return "Sin stock";
+                            } else {
+                                return stock;
+                            }
+                        },
+                        "className": "text-center"
+                    },
+                    {
+                        "data": "id",
+                        render: function (data, type, row) {
+                            if (row.stock === 0) {
+                                return "<button class='btn btn-info btn-sm' type='button' style='margin-left:5px; margin-top: 15px;' disabled><i class='fa-solid fa-cart-plus'></i></button>";
+                            } else {
+                                return "<a class='btn btn-info btn-sm' style='margin-left:5px; margin-top: 15px;' title='Agregar al carrito' onclick=Create(" + data + ")><i class='fa-solid fa-cart-plus'></i></a>";
+                            }
+                        },
+                        "orderable": false,
+                        "width": "150px",
+                        "className": "text-center"
+                    }
+                ],
+                "language": {
+                    "emptyTable": "No hay productos disponibles",
+                    "lengthMenu": "Mostrar  _MENU_  registros",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ productos",
+                    "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                    "infoFiltered": "(Filtrado de _MAX_ total productos)",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior",
+                    }
+                }
+            });
+        });
+
+        function Create(id) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Crear","Carrito")/' + id,
+                success: function (response) {
+                    window.location.href = response.redirectToUrl;
+                }
+            });
+        }
+
+    </script>
+}
+
+
+

@@ -1,0 +1,50 @@
+﻿@model Libreria.Models.proveedores
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("CrearEditar", "Proveedores", FormMethod.Post))
+{
+    @Html.HiddenFor(model => model.id)
+
+    if (Model.id == 0)
+    {
+        <h5 style="color: Tomato; text-align: center; font-weight: bold; ">Registrar nuevo proveedor</h5>
+    }
+    else
+    {
+        <h5 style="color: Tomato; text-align: center; font-weight: bold; ">Editar datos del proveedor</h5>
+    }
+
+    <div class="form-group">
+        <label for="nombre">Nombre<span style="color: red"> *</span></label>
+        @Html.EditorFor(model => model.nombre, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+        @Html.ValidationMessageFor(model => model.nombre, null, new { @class = "text-danger" })
+    </div>
+    <br />
+    <div class="form-group">
+        <label for="email">Email<span style="color: red"> *</span></label>
+        @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+        @Html.ValidationMessageFor(model => model.email, null, new { @class = "text-danger" })
+    </div>
+    <br />
+    <div class="form-group">
+        <label for="telefono">Teléfono<span style="color: red"> *</span></label>
+        @Html.EditorFor(model => model.telefono, new { @class = "form-control", required = "required" })
+        @Html.ValidationMessageFor(model => model.telefono, null, new { @class = "text-danger" })
+    </div>
+    <br />
+    <div class="form-group">
+        <label for="direccion">Direccion<span style="color: red"> *</span></label>
+        @Html.EditorFor(model => model.direccion, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+        @Html.ValidationMessageFor(model => model.direccion, null, new { @class = "text-danger" })
+    </div>
+    <br />
+
+    <div class="form-group">
+        <input type="submit" value="Guardar" class="btn btn-primary" style="color: white;"/>
+        <span style="font-size: 14px; float: right"><span style="color: red"> *</span> Campo obligatorio</span>
+    </div>
+}
+
+
